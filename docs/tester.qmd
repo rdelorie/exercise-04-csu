@@ -3,10 +3,53 @@ title: "tester"
 format: html
 ---
 
-```{r}
-#| echo: true
+# Some basic Data Exploration
 
-getwd()
-file.exists('../img/quartoflow.png')
-knitr::include_graphics('../img/quartoflow.png')
+With an understanding of the data, lets answers a few questions:
+
+```{r}
+# Which cities are the most dense?
+cities  |> 
+  select(city, state_id, population, density)  |> 
+  arrange(-density)  |> 
+  head()
+
+# Which cities have the most people?
+cities  |> 
+  select(city, state_id, population, density) |> 
+  arrange(-population)  |> 
+  head()
+```
+
+## In line code:
+
+```{r}
+#| echo: false
+threshold <- 100000
+
+big_cities <-  cities |> 
+  filter(population > threshold)  |> 
+  filter(!state_name %in% c("Alaska", "Hawaii", "Puerto Rico"))
+```
+
+We can evaluate R variables and code in-line. For example, there are `r nrow(big_cities)` cities with a population greater then `r formatC(100000, format="d", big.mark=",")`.
+
+Here is a map!
+
+```{r, filename="matplotlib.py"}
+#| echo: false
+
+big_cities  |>  
+  ggplot() + 
+  aes(x = lng, y = lat) + 
+  geom_point(aes(size = population, color = density)) + 
+  scale_color_gradient(low = "blue", high = "red") + 
+  labs(title = "USA Cities Population Stats",
+       subtitle = paste("Cities bigger then:", 
+                        formatC(100000, format="d", big.mark=","),
+                        "people"),
+       caption = paste("Made by:", rmarkdown::metadata$author, "- ESS 330"),
+       x="",
+       y = "") + 
+  theme_bw()
 ```

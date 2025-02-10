@@ -1,7 +1,7 @@
 ---
 title: "ESS 330 Actvity 4"
 subtitle: "Meet R, Quarto, & Github"
-author: Mike Johnson
+author: Rachel Delorie
 date: last-modified
 format:
   html:
@@ -232,14 +232,14 @@ cities  |>
 
 ```{r}
 #| echo: false
-threshold <- 10000
+threshold <- 100000
 
 big_cities <-  cities |> 
   filter(population > threshold)  |> 
   filter(!state_name %in% c("Alaska", "Hawaii", "Puerto Rico"))
 ```
 
-We can evaluate R variables and code in-line. For example, there are `r nrow(big_cities)` cities with a population greater then `r formatC(threshold, format="d", big.mark=",")`.
+We can evaluate R variables and code in-line. For example, there are `r nrow(big_cities)` cities with a population greater then `r formatC(100000, format="d", big.mark=",")`.
 
 Here is a map!
 
